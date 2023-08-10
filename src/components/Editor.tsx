@@ -1,6 +1,6 @@
-import { FC, useEffect, useRef } from "react"
-import EditorJS from "@editorjs/editorjs"
-import { TOOLS } from "../conf/tools"
+import { FC, useEffect, useRef } from 'react'
+import EditorJS from '@editorjs/editorjs'
+import { TOOLS } from '../conf/tools'
 
 export const Editor: FC<{
     onInit?: (editor: EditorJS) => void
@@ -8,7 +8,7 @@ export const Editor: FC<{
     const ref = useRef<HTMLDivElement>(null)
     useEffect(() => {
         const current = ref.current
-        if(!current) return
+        if (!current) return
 
         const editor = new EditorJS({
             holder: current,
@@ -28,6 +28,9 @@ export const Editor: FC<{
     }, [ref, onInit])
 
     return (
-        <div ref={ref} style={{fontFamily: '"Roboto","Helvetica","Arial",sans-serif'}}></div>
+        <div
+            ref={ref}
+            style={{ fontFamily: '"Roboto","Helvetica","Arial",sans-serif' }}
+        ></div>
     )
 }

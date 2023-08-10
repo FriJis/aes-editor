@@ -9,5 +9,13 @@ import raw from '@editorjs/raw'
 import simpleImage from '@editorjs/simple-image'
 
 export const TOOLS = {
-    header, checklist, embed, link, list, quote, raw, simpleImage, table
+    header,
+    checklist,
+    embed,
+    link,
+    list,
+    quote,
+    raw,
+    simpleImage,
+    table,
 }
