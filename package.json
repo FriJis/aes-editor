@@ -2,6 +2,7 @@
   "name": "aes-editor",
   "version": "0.1.0",
   "private": true,
+  "homepage": "./",
   "dependencies": {
     "@editorjs/checklist": "^1.5.0",
     "@editorjs/editorjs": "^2.27.2",
