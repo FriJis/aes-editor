@@ -7,6 +7,7 @@ import {
     Dialog,
     DialogContent,
     InputAdornment,
+    Snackbar,
     TextField,
 } from '@mui/material'
 import { Editor } from './components/Editor'
@@ -21,11 +22,22 @@ function App() {
     const [hash, setHash] = useState('')
     const [error, setError] = useState<null | string>(null)
     const [showError, setShowError] = useState(false)
+    const [showCopiedSnackbar, setShowCopiedSnackbar] = useState(false)
 
     const save = async () => {
-        const data = await editor?.save()
-        const hash = aes.encrypt(JSON.stringify(data), password)
-        setHash(hash)
+        try {
+            const data = await editor?.save()
+            const hash = aes.encrypt(JSON.stringify(data), password)
+            const decryptedData = aes.decrypt(hash, password)
+            if (JSON.stringify(data) !== decryptedData)
+                throw new Error('Data compatibility error')
+            setHash(hash)
+            copy(hash)
+            setShowCopiedSnackbar(true)
+        } catch (error: any) {
+            setShowError(true)
+            setError(error.message)
+        }
     }
 
     const load = async () => {
@@ -43,12 +55,19 @@ function App() {
 
     const copyClick = () => {
         copy(hash)
+        setShowCopiedSnackbar(true)
     }
 
     return (
         <Container
             sx={{ gap: '10px', display: 'flex', flexDirection: 'column' }}
         >
+            <Snackbar
+                open={showCopiedSnackbar}
+                autoHideDuration={2000}
+                onClose={() => setShowCopiedSnackbar(false)}
+                message="Copied!"
+            />
             <Dialog open={showError} onClose={() => setShowError(false)}>
                 <DialogContent>{error}</DialogContent>
             </Dialog>
@@ -81,7 +100,7 @@ function App() {
                     />
                 </CardContent>
                 <CardActions>
-                    <Button onClick={load}>decode</Button>
+                    <Button onClick={load}>decrypt</Button>
                     <Button onClick={save}>encrypt</Button>
                 </CardActions>
             </Card>
